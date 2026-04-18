@@ -20,8 +20,18 @@ export default async function handler(req, res) {
         })
     });
 
-    const data = await response.json();
-    const aiReply = data.choices[0].message.content;
 
-    res.status(200).json({ reply: aiReply });
-}
+    const data = await response.json();
+
+    // 调试利器：在 Vercel Logs 里看看 AI 到底返回了什么
+    console.log("DeepSeek Response:", JSON.stringify(data));
+    
+    // 增加安全判断
+    if (data.choices && data.choices.length > 0) {
+        const aiReply = data.choices[0].message.content;
+        res.status(200).json({ reply: aiReply });
+    } else {
+        // 如果 AI 报错了，把报错信息传回给前端，方便你 Debug
+        console.error("AI Error Details:", data);
+        res.status(500).json({ reply: "天机阻塞，原因：" + (data.error?.message || "未知错误") });
+    }
