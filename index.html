@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数字易经 - 占卜工具</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="card">
+    <div id="step1" class="section active">
+        <div style="text-align:center;">
+            <h2>数字易经</h2>
+            <p class="subtitle">心诚则灵，写下你所求之事</p>
+        </div>
+        <div class="divider"><span>☰</span></div>
+        <input type="text" id="target" placeholder="例如：明天面试顺利吗？">
+        <button class="btn-primary" onclick="goToStep2()">开始起卦</button>
+    </div>
+
+    <div id="step2" class="section">
+        <div id="gua-container"></div>
+        <div class="coin-box">
+            <div class="coin" id="c1">
+                <div class="coin-face front">
+                    <span>光</span><span>緒</span><span>通</span><span>寶</span>
+                </div>
+                <div class="coin-face back"></div>
+            </div>
+            <div class="coin" id="c2">
+                <div class="coin-face front">
+                    <span>光</span><span>緒</span><span>通</span><span>寶</span>
+                </div>
+                <div class="coin-face back"></div>
+            </div>
+            <div class="coin" id="c3">
+                <div class="coin-face front">
+                    <span>光</span><span>緒</span><span>通</span><span>寶</span>
+                </div>
+                <div class="coin-face back"></div>
+            </div>
+        </div>
+        <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+        <p id="info">请掷钱（第 1 次 / 共 6 次）</p>
+        <button class="btn-primary" id="mainBtn" onclick="doToss()">掷 钱</button>
+    </div>
+
+    <div id="step3" class="section fade-in">
+        <div style="text-align:center;">
+            <p class="result-target" id="final-target"></p>
+            <div id="result-gua-display"></div>
+            <p class="result-label">占得卦象为</p>
+            <h1 class="gua-name" id="gua-name"></h1>
+            <div class="gua-text" id="gua-text"></div>
+                <div class="loading-wrapper">
+                    <div class="dot-ani"></div>
+                    <p>大师正在合算天机，请稍候...</p>
+                </div>
+            </div>
+            <button class="btn-secondary" onclick="location.reload()">重新起卦</button>
+        </div>
+    </div>
+    
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
