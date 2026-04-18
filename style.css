@@ -45,8 +45,25 @@ body::before {
     border-radius: 4px;
     box-shadow: 0 8px 24px rgba(44,24,16,0.12);
     border: 1px solid rgba(107,58,42,0.1);
+    /* 新增：设置最大高度，超过则显示内部滚动条 */
+    max-height: 85vh; 
+    display: flex;
+    flex-direction: column;
+}
+/* 2. 让 Step 3 内部的结果区域可以滚动 */
+#step3 {
+    overflow-y: auto;
+    padding-right: 8px; /* 给滚动条留点空间 */
 }
 
+/* 3. 美化滚动条（可选，让它看起来更像中式纸张风格） */
+#step3::-webkit-scrollbar {
+    width: 4px;
+}
+#step3::-webkit-scrollbar-thumb {
+    background: var(--gold-light);
+    border-radius: 10px;
+}
 .card::before {
     content: "";
     position: absolute;
@@ -244,4 +261,23 @@ button {
 @keyframes fadeInContent {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+.ai-content {
+    min-height: 120px;
+    line-height: 1.8;
+    text-align: left;
+    white-space: pre-wrap;
+    padding: 18px;
+    background: rgba(255, 255, 255, 0.4);
+    border-radius: 6px;
+    font-size: 15px;
+    margin: 15px 0;
+    
+    /* 增加段落间距 */
+    letter-spacing: 0.5px;
+}
+.btn-secondary {
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
