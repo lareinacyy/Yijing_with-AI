@@ -158,8 +158,12 @@ async function showResult() {
         }
 
         // 4. 将原本的“加载中”文字替换为真正的 AI 解卦词
-        document.getElementById('gua-text').innerText = aiData.reply;
+        guaTextContainer.innerHTML = ""; // 这一步删掉了“合算天机”的 HTML 结构
 
+        const replyDiv = document.createElement('div');
+        replyDiv.className = "fade-in-text"; // 触发 CSS 渐显效果
+        replyDiv.innerText = data.reply;
+        guaTextContainer.appendChild(replyDiv); // 将大师的回复放进去
     } catch (error) {
         console.error("AI 接口调用失败:", error);
         document.getElementById('gua-text').innerText = "暂无法连接天机，请看基础卦辞：" + resultData.text;
