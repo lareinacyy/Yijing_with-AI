@@ -118,25 +118,27 @@ async function showResult() {
     const resultData = guaData[code];
     const targetInput = document.getElementById('target').value.trim() || "未填写";
 
-    // 1. 立即切换到结果页面，展示已有的卦象信息
+    // 1. 立即切换到结果页面
     document.getElementById('final-target').innerText = "所求之事：" + targetInput;
     document.getElementById('result-gua-display').innerHTML = document.getElementById('gua-container').innerHTML;
     
+    const guaTextContainer = document.getElementById('gua-text'); // 【修正 1：定义容器变量】
+
     if (resultData) {
         document.getElementById('gua-name').innerText = resultData.name;
-        // 先给用户一个“大师正在思考”的反馈，避免页面空白
-        document.getElementById('gua-text').innerHTML = '<div class="loading-text">大师正在合算天机，请稍候...</div>';
+        // 显示加载动画
+        guaTextContainer.innerHTML = '<div class="loading-text">大师正在合算天机，请稍候...</div>';
     } else {
         document.getElementById('gua-name').innerText = code;
-        document.getElementById('gua-text').innerText = '未找到对应卦象数据';
-        return; // 如果卦象数据错误则停止
+        guaTextContainer.innerText = '未找到对应卦象数据';
+        return;
     }
 
     // 切换显示 Step 3
     document.getElementById('step2').classList.remove('active');
     document.getElementById('step3').classList.add('active');
 
-    // 2. 异步调用 AI 接口进行校验和解卦
+    // 2. 异步调用 AI 接口
     try {
         const response = await fetch('/api/interpret', {
             method: 'POST',
@@ -148,24 +150,26 @@ async function showResult() {
             })
         });
 
-        const aiData = await response.json();
+        const aiData = await response.json(); // 注意：这里定义的变量名叫 aiData
 
         // 3. 处理 AI 的校验结果
-        if (aiData.reply.includes("REJECT")) {
+        if (aiData.reply && aiData.reply.includes("REJECT")) {
             alert("卦象显示：所求之事语焉不详。请重新整理思绪，诚心发问。");
-            location.reload(); // 校验失败，刷新重来
+            location.reload(); 
             return;
         }
 
-        // 4. 将原本的“加载中”文字替换为真正的 AI 解卦词
-        guaTextContainer.innerHTML = ""; // 这一步删掉了“合算天机”的 HTML 结构
+        // 4. 【修正 2：确保变量名一致】
+        guaTextContainer.innerHTML = ""; // 删掉加载文字
 
         const replyDiv = document.createElement('div');
-        replyDiv.className = "fade-in-text"; // 触发 CSS 渐显效果
-        replyDiv.innerText = data.reply;
-        guaTextContainer.appendChild(replyDiv); // 将大师的回复放进去
+        replyDiv.className = "fade-in-text"; 
+        replyDiv.innerText = aiData.reply; // 【这里必须用 aiData.reply】
+        guaTextContainer.appendChild(replyDiv); 
+
     } catch (error) {
         console.error("AI 接口调用失败:", error);
-        document.getElementById('gua-text').innerText = "暂无法连接天机，请看基础卦辞：" + resultData.text;
+        // 报错时显示基础卦辞
+        document.getElementById('gua-text').innerText = "暂无法连接天机，请看基础卦辞：" + (resultData ? resultData.text : "无");
     }
 }
